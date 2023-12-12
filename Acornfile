@@ -1,0 +1,94 @@
+name:        "Plex Acorn"
+description: "Acorn running a sample Plex Application"
+readme:      "./README.md"
+icon:        "./plex-icon.png"
+
+args: {
+  scale: 1
+  // Plex Claim Token
+  plexserver_claim: ""
+  // Plex Media Storage Size
+	storage:     "2G"
+  // Wasabi S3 Access Key
+	access_key:  ""
+  // Wasabi S3 Secret Key
+	secret_key:  ""
+  // Wasabi S3 Bucket Name
+	bucket_name: ""
+  // Schedule Job to run daily
+  rclone_schedule: "@daily"
+}
+
+containers: {
+  plexserver: {
+    scale: args.scale
+    env: {
+      "PLEX_CLAIM": args.plexserver_claim
+      "PGID": "1000"
+      "PUID": "1000"
+      "VERSION": "latest"
+      "TZ": "Asia/Kolkata"
+
+    }
+    image: "ghcr.io/linuxserver/plex"
+    ports: {
+      publish: [
+        "32400:32400/http",
+        "32469/tcp",
+        "3005/tcp",
+        "8324/tcp",
+        "1900/udp",
+        "5354:5353/udp",
+        "32410/udp",
+        "32412/udp",
+        "32413/udp",
+        "32414/udp"
+      ]
+    }
+    dirs: {
+      "/config": "volume://plex-config"
+      "/plexmedia": "volume://plexmedia"
+    }
+  }
+}
+
+jobs: {
+  "rclone-init": {
+      image: "rclone/rclone:latest"
+      env: {
+        RCLONE_CONFIG_MYS3_TYPE: "s3"
+        AWS_ACCESS_KEY_ID:     args.access_key
+        AWS_SECRET_ACCESS_KEY: args.secret_key
+        AWS_S3_BUCKET:         args.bucket_name
+      }
+      dirs: {
+        "./rclone-config-script.sh": "./rclone-config-script.sh"
+        "/plexmedia": "volume://plexmedia"
+      }
+      entrypoint: ["/bin/sh", "-c", "./rclone-config-script.sh"]
+  }
+  "rclone-cronjob": {
+      image: "rclone/rclone:latest"
+      env: {
+        RCLONE_CONFIG_MYS3_TYPE: "s3"
+        AWS_ACCESS_KEY_ID:     args.access_key
+        AWS_SECRET_ACCESS_KEY: args.secret_key
+        AWS_S3_BUCKET:         args.bucket_name
+      }
+      dirs: {
+        "./rclone-config-script.sh": "./rclone-config-script.sh"
+        "/plexmedia": "volume://plexmedia"
+      }
+      entrypoint: ["/bin/sh", "-c", "./rclone-config-script.sh"]
+      schedule: args.rclone_schedule
+  }
+}
+
+volumes: {
+  "plex-config": {
+    size: 100M
+  }
+  "plexmedia": {
+    size: args.storage
+  }
+}
