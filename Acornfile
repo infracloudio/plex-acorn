@@ -30,7 +30,7 @@ containers: {
       "TZ": "Asia/Kolkata"
 
     }
-    image: "ghcr.io/linuxserver/plex"
+    image: "ghcr.io/linuxserver/plex:1.32.8"
     ports: {
       publish: [
         "32400:32400/http",
