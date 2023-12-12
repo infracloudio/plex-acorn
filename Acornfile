@@ -1,0 +1,69 @@
+args: {
+  scale: 1
+  plexserver_claim: "claim-rimtgin_2Usb-gFffKrL"
+	storage:     "2G"
+	access_key:  "WV7GWL5T4P6CPX0SGVBG"
+	secret_key:  "6TbLqRn30rUPo2IeP7HwZb2vSTys7jXIG3DCFM3g"
+	bucket_name: "plex-acorn-test"
+}
+
+containers: {
+  plexserver: {
+    scale: args.scale
+    env: {
+      "PLEX_CLAIM": args.plexserver_claim
+      "PGID": "1000"
+      "PUID": "1000"
+      "VERSION": "latest"
+      "TZ": "Asia/Kolkata"
+
+    }
+    image: "ghcr.io/linuxserver/plex"
+    ports: {
+      publish: [
+        "32400:32400/http",
+        "32469/tcp",
+        "3005/tcp",
+        "8324/tcp",
+        "1900/udp",
+        "5354:5353/udp",
+        "32410/udp",
+        "32412/udp",
+        "32413/udp",
+        "32414/udp"
+      ]
+    }
+    dirs: {
+      "/config": "volume://config?subpath=config"
+      "/plexmedia": "volume://plexmedia"
+    }
+  }
+}
+
+jobs: {
+    "rclone": {
+        image: "rclone/rclone:latest"
+        env: {
+          RCLONE_CONFIG_MYS3_TYPE: "s3"
+          AWS_ACCESS_KEY_ID:     args.access_key
+          AWS_SECRET_ACCESS_KEY: args.secret_key
+          AWS_S3_BUCKET:         args.bucket_name
+        }
+        dirs: {
+          //"/config/rclone/": "volume://config?subpath=rclone"
+          "./rclone-config-script.sh": "./rclone-config-script.sh"
+          "/plexmedia": "volume://plexmedia"
+        }
+        entrypoint: ["/bin/sh", "-c", "./rclone-config-script.sh"]
+        schedule: "*/1 * * * *"
+    }
+}
+
+volumes: {
+  "config": {
+    size: 500M
+  }
+  "plexmedia": {
+    size: 3G
+  }
+}
