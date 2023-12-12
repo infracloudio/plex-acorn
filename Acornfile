@@ -1,10 +1,22 @@
+name:        "Plex Acorn"
+description: "Acorn running a sample Plex Application"
+readme:      "./README.md"
+icon:        "./plex-icon.png"
+
 args: {
   scale: 1
-  plexserver_claim: "claim-rimtgin_2Usb-gFffKrL"
+  // Plex Claim Token
+  plexserver_claim: ""
+  // Plex Media Storage Size
 	storage:     "2G"
-	access_key:  "WV7GWL5T4P6CPX0SGVBG"
-	secret_key:  "6TbLqRn30rUPo2IeP7HwZb2vSTys7jXIG3DCFM3g"
-	bucket_name: "plex-acorn-test"
+  // Wasabi S3 Access Key
+	access_key:  ""
+  // Wasabi S3 Secret Key
+	secret_key:  ""
+  // Wasabi S3 Bucket Name
+	bucket_name: ""
+  // Schedule Job to run daily
+  rclone_schedule: "@daily"
 }
 
 containers: {
@@ -34,36 +46,49 @@ containers: {
       ]
     }
     dirs: {
-      "/config": "volume://config?subpath=config"
+      "/config": "volume://plex-config"
       "/plexmedia": "volume://plexmedia"
     }
   }
 }
 
 jobs: {
-    "rclone": {
-        image: "rclone/rclone:latest"
-        env: {
-          RCLONE_CONFIG_MYS3_TYPE: "s3"
-          AWS_ACCESS_KEY_ID:     args.access_key
-          AWS_SECRET_ACCESS_KEY: args.secret_key
-          AWS_S3_BUCKET:         args.bucket_name
-        }
-        dirs: {
-          //"/config/rclone/": "volume://config?subpath=rclone"
-          "./rclone-config-script.sh": "./rclone-config-script.sh"
-          "/plexmedia": "volume://plexmedia"
-        }
-        entrypoint: ["/bin/sh", "-c", "./rclone-config-script.sh"]
-        schedule: "*/1 * * * *"
-    }
+  "rclone-init": {
+      image: "rclone/rclone:latest"
+      env: {
+        RCLONE_CONFIG_MYS3_TYPE: "s3"
+        AWS_ACCESS_KEY_ID:     args.access_key
+        AWS_SECRET_ACCESS_KEY: args.secret_key
+        AWS_S3_BUCKET:         args.bucket_name
+      }
+      dirs: {
+        "./rclone-config-script.sh": "./rclone-config-script.sh"
+        "/plexmedia": "volume://plexmedia"
+      }
+      entrypoint: ["/bin/sh", "-c", "./rclone-config-script.sh"]
+  }
+  "rclone-cronjob": {
+      image: "rclone/rclone:latest"
+      env: {
+        RCLONE_CONFIG_MYS3_TYPE: "s3"
+        AWS_ACCESS_KEY_ID:     args.access_key
+        AWS_SECRET_ACCESS_KEY: args.secret_key
+        AWS_S3_BUCKET:         args.bucket_name
+      }
+      dirs: {
+        "./rclone-config-script.sh": "./rclone-config-script.sh"
+        "/plexmedia": "volume://plexmedia"
+      }
+      entrypoint: ["/bin/sh", "-c", "./rclone-config-script.sh"]
+      schedule: args.rclone_schedule
+  }
 }
 
 volumes: {
-  "config": {
-    size: 500M
+  "plex-config": {
+    size: 100M
   }
   "plexmedia": {
-    size: 3G
+    size: args.storage
   }
 }
