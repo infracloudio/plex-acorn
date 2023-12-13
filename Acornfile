@@ -5,18 +5,22 @@ icon:        "./plex-icon.png"
 
 args: {
   scale: 1
-  // Plex Claim Token
+  // required: Plex Claim Token
   plexserver_claim: ""
-  // Plex Media Storage Size
-	storage:     "2G"
-  // Wasabi S3 Access Key
-	access_key:  ""
-  // Wasabi S3 Secret Key
-	secret_key:  ""
-  // Wasabi S3 Bucket Name
-	bucket_name: ""
-  // Schedule Job to run daily
-  rclone_schedule: "@daily"
+	// Optional: Plex media volume size
+	storage:          "2G"
+	// Required: Wasabi bucket name
+	bucket_name:      ""
+	// Required: Wasabi bucket region. Default: us-east-1
+	region:           "us-east-1"
+	// Required: Wasabi bucket url. Default: s3.wasabisys.com
+	endpoint_url:     "s3.wasabisys.com"
+	// Required: Wasabi access key
+	access_key:       ""
+	// Required: Wasabi secret key
+	secret_key:       ""
+	// Optional: Bucket sync job cron schedule. Default: every 6 hours.
+  rclone_schedule:  "0 */6 * * *"
 }
 
 containers: {
@@ -60,6 +64,8 @@ jobs: {
         AWS_ACCESS_KEY_ID:     args.access_key
         AWS_SECRET_ACCESS_KEY: args.secret_key
         AWS_S3_BUCKET:         args.bucket_name
+				REGION:                args.region
+				ENDPOINT_URL: 				 args.endpoint_url
       }
       dirs: {
         "./rclone-config-script.sh": "./rclone-config-script.sh"
@@ -74,6 +80,8 @@ jobs: {
         AWS_ACCESS_KEY_ID:     args.access_key
         AWS_SECRET_ACCESS_KEY: args.secret_key
         AWS_S3_BUCKET:         args.bucket_name
+				REGION:                args.region
+				ENDPOINT_URL: 				 args.endpoint_url
       }
       dirs: {
         "./rclone-config-script.sh": "./rclone-config-script.sh"

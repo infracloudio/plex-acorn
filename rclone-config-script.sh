@@ -12,8 +12,8 @@ type = s3
 provider = Wasabi
 access_key_id = $AWS_ACCESS_KEY_ID
 secret_access_key = $AWS_SECRET_ACCESS_KEY
-region = us-east-1
-endpoint = s3.wasabisys.com
+region = $REGION
+endpoint = $ENDPOINT_URL
 
 EOF
 
