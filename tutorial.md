@@ -74,7 +74,7 @@ In this option you use the published Acorn application image to deploy the Plex 
 
    4.2. Running Plex
 
-   ![Plex Homepage](./assets/plex-homepage.png)
+   ![Plex Homepage](./assets/plex-home.png)
 
 ## Deploying Using Acorn CLI
 
@@ -256,7 +256,7 @@ Below is what the output looks like.
 
 The Acornfile is configured with defaults and is available to run the Plex as is once your own Wasabi S3 credentials are configured.
 
-![Plex Homepage](./assets/plex-homepage.png)
+![Plex Homepage](./assets/plex-home.png)
 
 ### Plex Media Library Setup
 
