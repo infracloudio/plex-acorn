@@ -4,11 +4,17 @@ Elevate your entertainment with Plex! Effortlessly organize, stream, and enjoy y
 
 With modern cloud-native services and technologies, complexities of setting up your infrastructure shouldn't be the reason to stop you. Enter [Acorn](http://www.acorn.io) - Unleash the power of seamless deployment, scalability, and top-notch security. Acorn simplifies the elaborate process to build, run and scale your applications by providing a comprehensive way to describe your application and dependencies in a single file called an [Acornfile](https://docs.acorn.io/reference/acornfile). There's more, you can experience the [Acorn Cloud Platform](https://acorn.io/auth) which includes free compute environments in the cloud for anyone with a GitHub account to run, test, and develop Acorns. 
 
-Today, we will explore how we can deploy Plex to host your own Media Library using Acorns. Before, we dive deep into creating your own Acorns, you can give Plex a shot by clicking the below link to launch the app immediately in a free sandbox environment. All you need is a GitHub ID to create an account.
+Let's get started with the tutorial to deploy Plex.
+
+Plex is a digital media player and organizational tool that allows you to your entire digital library. We will be deploying Plex in conjuction with [Wasabi](https://wasabi.com/hot-cloud-storage/),one of the most affordable online storage options available. You can store all of your media on it with as little as $6.99 TB/Month, with no egress charges. 
+
+To start using the application, you need to create your own Wasabi S3 bucket by registering to Wasabi. Once signed in, populate the Wasabi S3 bucket with your favourite Photos, Movies or Videos and generate Access Credentials. We will be using these credentials to connect to Plex to download the Media using [Rclone](https://rclone.org/). We have two Rclone Jobs : rclone-init: to perform one-time initial sync of Plex with Wasabi S3 and rclone-cronjob: runs as a scheduled cronjob for periodic Data Sync from the Wasabi S3 bucket and Plex Media volume with default cron schedule of every 6hrs.
+
+Before, we dive deep into creating your own Acorns, you can give Plex a shot by clicking the below link to launch the app immediately in a free sandbox environment. All you need is a GitHub ID to create an account and provide Wasabi S3 configs in Advanced Configurations.
 
 [![Run in Acorn](https://acorn.io/v1-ui/run/badge?image=ghcr.io+infracloudio+plex-acorn:v1.32.8-0&ref=aashimodi14)](https://acorn.io/run/ghcr.io/infracloudio/plex-acorn:v1.32.8-0?ref=aashimodi14&name=plex-app)
 
-Let's get started with the tutorial to deploy Plex.
+Now, we will deep dive into developing your own Plex Acorn. So, follow along!
 
 > _Note: Everything shown in this tutorial can be found in [this repository](https://github.com/infracloudio/plex-acorn)_.
 ## Pre-requisites
@@ -95,17 +101,15 @@ Once cloned here’s how the directory structure will look.
 ├── LICENSE
 ├── plex-icon.png
 ├── rclone-config-script.sh
-├── README.md
+└── README.md
 
 ```
 
 ### Understanding the Acornfile
 
-To run the application we need an Acornfile which describes the whole application without all of the boilerplate of Kubernetes YAML files. The Acorn CLI is used to build, deploy, and operate Acorn on the Acorn cloud platform.
+To run the application we need an Acornfile which describes the whole application without all of the boilerplate of Kubernetes YAML files. 
 
-Before we dive into the intricacies of writing your own Acornfiles, available [Acorn elements](https://docs.acorn.io/reference/acornfile), usage of [Acorn Services](https://docs.acorn.io/authoring/services) and [Acorn Jobs](https://docs.acorn.io/authoring/jobs) might be worth exploring.  
-
-Below is the Acornfile for deploying the Plex Server that we created earlier:
+Before we dive into the intricacies of writing your own Acornfiles, available [Acorn elements](https://docs.acorn.io/reference/acornfile), usage of [Acorn Services](https://docs.acorn.io/authoring/services) and [Acorn Jobs](https://docs.acorn.io/authoring/jobs) might be worth exploring.
 
 ```sh
 
@@ -228,7 +232,7 @@ The above Acornfile has the following elements:
 - **Containers**: We define the plexserver container with following configurations:
   - **plexserver**:
     - **scale**: Plexserver Replicas
-    - **image**: It defines Petclinic image
+    - **image**: It defines Plex image
     - **env**: Environment variables for running the plex server.
     - **ports**: ports required by the application.
     - **dirs**: Config and Plex Media Volume mounts for the app.
@@ -239,6 +243,7 @@ The above Acornfile has the following elements:
     - **dirs**: Rclone script to create rclone configs for wasabi s3 sync and Plex Media Volume mount.
     - **entrypoint**: Run the config script on container start.
   - **rclone-cronjob**: Rclone Cron Job for periodic Data Sync from the Wasabi S3 bucket and Plex Media volume with default cron schedule of every 6hrs. 
+- **Volumes**: Volumes to store persistent data in your applications
 
 ### Running the Application
 
