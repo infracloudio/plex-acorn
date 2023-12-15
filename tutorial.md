@@ -22,7 +22,12 @@ Please Note: Be sure to provide the corresponding "endpoint URL" in the "args" w
 
 ![Create Bucket](./assets/create-bucket-preview.png)
 
-- Select Create Bucket
+- Select Create Bucket.
+- Once the bucket is create, you can now upload your artifacts.
+- Now, to access the bucket need to create Access Keys. Go to Access Keys and select Create Access Key for Root or Sub-User as per requirement.
+- Save the Access Keys safely. 
+
+We will be using the above Bucket and Access Details to sync the Wasabi S3 bucket and Plex. 
 
 Before, we dive deep into creating your own Acorns, you can give Plex a shot by clicking the below link to launch the app immediately in a free sandbox environment. All you need is a GitHub ID to create an account and provide Wasabi S3 configs in Advanced Configurations.
 
