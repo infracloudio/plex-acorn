@@ -30,7 +30,7 @@ $ acorn login
 
 ## Deploying the Plex Media Server App
 
-There are two ways to deploy Mastodon server on Acorn Platform.
+There are two ways to deploy Plex server on Acorn Platform.
 
 1. Using Acorn platform dashboard.
 2. Using CLI
@@ -78,7 +78,7 @@ In this option you use the published Acorn application image to deploy the Plex 
 
 ## Deploying Using Acorn CLI
 
-As mentioned previously, running the Acorn application using CLI lets you understand the Acornfile. With the CLI option, you can customize the Plex to your requirement or use your Acorn knowledge to run your own Spring Boot App.
+As mentioned previously, running the Acorn application using CLI lets you understand the Acornfile. With the CLI option, you can customize the Plex to your requirement or use your Acorn knowledge to run your own application.
 
 To run the application using CLI you first need to clone the source code repository on your machine.
 
@@ -101,9 +101,11 @@ Once cloned here’s how the directory structure will look.
 
 ### Understanding the Acornfile
 
-To run the application we need an Acornfile which describes the whole application without all of the boilerplate of Kubernetes YAML files. The Acorn CLI is used to build, deploy, and operate Acorn on the Acorn cloud platform. It also can work on any Kubernetes cluster running the open source Acorn Runtime.
+To run the application we need an Acornfile which describes the whole application without all of the boilerplate of Kubernetes YAML files. The Acorn CLI is used to build, deploy, and operate Acorn on the Acorn cloud platform.
 
-Below is the Acornfile for deploying the Mastodon Server that we created earlier:
+Before we dive into the intricacies of writing your own Acornfiles, available [Acorn elements](https://docs.acorn.io/reference/acornfile), usage of [Acorn Services](https://docs.acorn.io/authoring/services) and [Acorn Jobs](https://docs.acorn.io/authoring/jobs) might be worth exploring.  
+
+Below is the Acornfile for deploying the Plex Server that we created earlier:
 
 ```sh
 
@@ -278,4 +280,4 @@ First time setup of Plex includes setting up your own Media Library like Movies,
 
 ## Conclusion
 
-In this tutorial we learned how to use the Acornfile and host your own Plex Media Server. Also, different ways to deploy the app using CLI and Dashboard approach.
+In this tutorial we explored how to host your own Plex Media Server and use Acorn to seemlessly not only deploy the application but also extend it to perform automated scheduled job for your app. Also, different ways to deploy the app using CLI and Dashboard approach.
