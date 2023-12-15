@@ -1,18 +1,14 @@
-# Deploying Spring Boot - Plex on Acorn
+# Deploying Plex on Acorn
 
-Have you heard about [Mastodon](https://joinmastodon.org/) , the decentralized social network? It's a bit like Twitter, but with a twist. Instead of one big platform, Mastodon is a network of independent servers, each with its own community, all connected through a shared system called the "fediverse". These large number of nodes run independently which are known as instances, each with its own code of conduct, terms of service, privacy policy, privacy options, and content moderation policies.
+Elevate your entertainment with Plex! Effortlessly organize, stream, and enjoy your media library anywhere, anytime. Plex's sleek interface, cross-platform compatibility, and remote access redefine how you experience movies, TV shows, music, and photos. Now, if you are considering hosting your own Plex Media Library, thats a nifty idea! With features like server-side transcoding and offline access, you can host your own Media Library using Plex for the ultimate media streaming and management experience. But if you are not familiar with the server and network setup that it requires, you might face some challenges. 
 
-It is a free and open-source software for running self-hosted social networking services. If you're thinking about hosting your own Mastodon server, that's a cool idea! You can create your own online space where people can join and chat dedicated to specific topic or common interest. But here's the catch: hosting your Mastodon server comes with some challenges, managing infratructure complexity and so on.
+With modern cloud-native services and technologies, complexities of setting up your infrastructure shouldn't be the reason to stop you. Enter [Acorn](http://www.acorn.io) - Unleash the power of seamless deployment, scalability, and top-notch security. Acorn simplifies the elaborate process to build, run and scale your applications by providing a comprehensive way to describe your application and dependencies in a single file called an [Acornfile](https://docs.acorn.io/reference/acornfile). There's more, you can experience the [Acorn Cloud Platform](https://acorn.io/auth) which includes free compute environments in the cloud for anyone with a GitHub account to run, test, and develop Acorns. 
 
-#################################################################################################################
+Today, we will explore how we can deploy Plex to host your own Media Library using Acorns. Before, we dive deep into creating your own Acorns, you can give Plex a shot by clicking the below link to launch the app immediately in a free sandbox environment. All you need is a GitHub ID to create an account.
 
-This is where [Acorn](http://www.acorn.io) comes in, it is a user-friendly cloud platform, simplifies deploying modern cloud-native apps with a free sandbox accessible through GitHub account. It streamlines development workflows using mainstream container tools, providing the power of Kubernetes and Terraform without complexity.
+[![Run in Acorn](https://acorn.io/v1-ui/run/badge?image=ghcr.io+infracloudio+plex-acorn:v1.32.8-0&ref=aashimodi14)](https://acorn.io/run/ghcr.io/infracloudio/plex-acorn:v1.32.8-0?ref=aashimodi14&name=plex-app)
 
-Deploying on Acorn is simple as defining your application with an [Acornfile](https://docs.acorn.io/reference/acornfile), generating a deployable Acorn Image.
-
-In this tutorial, we'll see how to set up the Plex.
-
-If you want to skip to the end, just click [![Run in Acorn](https://acorn.io/v1-ui/run/badge?image=ghcr.io+infracloudio+plex-acorn:v1.32.8-0&ref=aashimodi14)](https://acorn.io/run/ghcr.io/infracloudio/plex-acorn:v1.32.8-0?ref=aashimodi14&name=plex-app)(Click on `Customize before deploying` to update default arguments) to launch the app immediately in a free sandbox environment. All you need to join is a GitHub ID to create an account.
+Let's get started with the tutorial to deploy Plex.
 
 > _Note: Everything shown in this tutorial can be found in [this repository](https://github.com/infracloudio/plex-acorn)_.
 ## Pre-requisites
