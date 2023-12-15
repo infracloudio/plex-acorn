@@ -10,6 +10,16 @@ Plex is a digital media player and organizational tool that allows you to your e
 
 To start using the application, you need to create your own Wasabi S3 bucket by registering to Wasabi. Once signed in, populate the Wasabi S3 bucket with your favourite Photos, Movies or Videos and generate Access Credentials. We will be using these credentials to connect to Plex to download the Media using [Rclone](https://rclone.org/). We have two Rclone Jobs : rclone-init: to perform one-time initial sync of Plex with Wasabi S3 and rclone-cronjob: runs as a scheduled cronjob for periodic Data Sync from the Wasabi S3 bucket and Plex Media volume with default cron schedule of every 6hrs.
 
+Steps to set up your Wasabi S3 Bucket:
+
+- Sign in to Wasabi - https://console.wasabisys.com/login
+- Go to Buckets and select Create Bucket. Add the required details such as name and region. 
+Please Note: Be sure to provide the corresponding "endpoint URL" in the "args" while deploying Plex. Current Defaults- region:"us-east-1" and endpoint_url:"s3.wasabisys.com" 
+![Select Region](./assets/select-region.png)
+- Click on Next and choose the required Bucket Settings
+![Create Bucket](./assets/create-bucket-preview.png)
+- Select Create Bucket
+
 Before, we dive deep into creating your own Acorns, you can give Plex a shot by clicking the below link to launch the app immediately in a free sandbox environment. All you need is a GitHub ID to create an account and provide Wasabi S3 configs in Advanced Configurations.
 
 [![Run in Acorn](https://acorn.io/v1-ui/run/badge?image=ghcr.io+infracloudio+plex-acorn:v1.32.8-0&ref=aashimodi14)](https://acorn.io/run/ghcr.io/infracloudio/plex-acorn:v1.32.8-0?ref=aashimodi14&name=plex-app)
@@ -21,6 +31,7 @@ Now, we will deep dive into developing your own Plex Acorn. So, follow along!
 
 - Acorn CLI: The CLI allows you to interact with the Acorn Runtime as well as Acorn to deploy and manage your applications. Refer to the [Installation documentation](https://docs.acorn.io/installation/installing) to install Acorn CLI for your environment.
 - A GitHub account is required to sign up and use the Acorn Platform.
+- Access to your Wasabi S3 bucket
 
 ## Acorn Login
 
